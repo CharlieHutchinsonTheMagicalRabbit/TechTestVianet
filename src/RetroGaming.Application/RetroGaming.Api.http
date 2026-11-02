@@ -1,0 +1,6 @@
+@RetroGaming.Api_HostAddress = http://localhost:5193
+
+GET {{RetroGaming.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

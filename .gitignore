@@ -1,0 +1,21 @@
+## Build & Output
+bin/
+obj/
+dist/
+node_modules/
+
+## IDE & Editor
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Logs & Temp
+*.log
+.output.txt
