@@ -63,11 +63,33 @@ function initMap() {
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  // High performance dark tiles
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20
+  // OpenStreetMap tiles.
+  //
+  // The standard OSM tile server (default below) does NOT require an API key.
+  // However OSM's tile usage policy rate-limits / blocks heavy or production use
+  // from arbitrary origins, which can surface as blocked/forbidden tiles when the
+  // app is hosted somewhere other than localhost. For production use a keyed,
+  // OSM-based provider (e.g. MapTiler, Thunderforest, Stadia) by setting the env
+  // vars below; the key is then appended as a query parameter.
+  //
+  //   VITE_MAP_TILE_URL     tile URL template ({z}/{x}/{y}, optional {s})
+  //   VITE_MAP_API_KEY      your provider API key (omit for plain OSM)
+  //   VITE_MAP_API_KEY_PARAM  query param name for the key (default: "apiKey";
+  //                           MapTiler uses "key", Thunderforest uses "apikey")
+  const tileUrl =
+    import.meta.env.VITE_MAP_TILE_URL ||
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  const apiKey = import.meta.env.VITE_MAP_API_KEY;
+  const apiKeyParam = import.meta.env.VITE_MAP_API_KEY_PARAM || 'apiKey';
+
+  const resolvedUrl = apiKey
+    ? `${tileUrl}${tileUrl.includes('?') ? '&' : '?'}${apiKeyParam}=${apiKey}`
+    : tileUrl;
+
+  L.tileLayer(resolvedUrl, {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abc',
+    maxZoom: 19
   }).addTo(map);
 
   renderMarkers();

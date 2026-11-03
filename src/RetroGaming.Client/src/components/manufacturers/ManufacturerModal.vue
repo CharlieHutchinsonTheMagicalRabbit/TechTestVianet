@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import type { ManufacturerDto, CreateManufacturerRequest, UpdateManufacturerRequest } from '../../types';
+import { validateNumberInRange, validateYear, MIN_YEAR } from '../../utils/validation';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -72,16 +73,19 @@ function validate(): boolean {
     errors.value.hqCountry = 'HQ Country cannot exceed 100 characters.';
   }
 
-  if (!foundedYear.value || foundedYear.value < 1800 || foundedYear.value > currentYear) {
-    errors.value.foundedYear = `Founded year must be between 1800 and ${currentYear}.`;
+  const foundedYearError = validateYear(foundedYear.value, 'Founded year', MIN_YEAR, currentYear);
+  if (foundedYearError) {
+    errors.value.foundedYear = foundedYearError;
   }
 
-  if (latitude.value === undefined || latitude.value === null || latitude.value < -90 || latitude.value > 90) {
-    errors.value.latitude = 'Latitude must be between -90 and 90.';
+  const latitudeError = validateNumberInRange(latitude.value, 'Latitude', -90, 90);
+  if (latitudeError) {
+    errors.value.latitude = latitudeError;
   }
 
-  if (longitude.value === undefined || longitude.value === null || longitude.value < -180 || longitude.value > 180) {
-    errors.value.longitude = 'Longitude must be between -180 and 180.';
+  const longitudeError = validateNumberInRange(longitude.value, 'Longitude', -180, 180);
+  if (longitudeError) {
+    errors.value.longitude = longitudeError;
   }
 
   return Object.keys(errors.value).length === 0;
@@ -183,7 +187,7 @@ function handleSubmit() {
           <input
             v-model.number="foundedYear"
             type="number"
-            :min="1800"
+            :min="1970"
             :max="currentYear"
             class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
             :class="{ 'border-rose-500': errors.foundedYear }"
