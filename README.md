@@ -34,7 +34,7 @@ Start the local SQL Server 2022 container in the background:
 ```bash
 docker compose up -d
 ```
-*Note: SQL Server will be exposed on port `1433` with `sa` credentials specified in `docker-compose.yml` (`Password: RetroGaming2026!`).*
+*Note: SQL Server will be exposed on port `1433` with `sa` credentials specified in `docker-compose.yml` (`Password: YourStrong@Passw0rd!`).*
 
 ### 2. Backend Setup (.NET 10 Web API)
 Apply database migrations and launch the ASP.NET Core Web API:
@@ -42,8 +42,8 @@ Apply database migrations and launch the ASP.NET Core Web API:
 # Navigate to the project root and run the API project
 dotnet run --project src/RetroGaming.Application
 ```
-- API Base URL: `http://localhost:5000` (or `https://localhost:7001`)
-- Interactive Swagger UI: `http://localhost:5000/swagger`
+- API Base URL: `http://localhost:5193`
+- Interactive Swagger UI: `http://localhost:5193/swagger`
 
 The database schema and deterministic seed data (manufacturers with HQ coordinates and classic retro consoles) will be initialized automatically upon startup.
 
@@ -55,7 +55,7 @@ npm install
 npm run dev
 ```
 - Frontend UI: `http://localhost:5173`
-- The frontend connects automatically to the backend API at `http://localhost:5000` with CORS preconfigured.
+- The frontend connects automatically to the backend API at `http://localhost:5193` with CORS preconfigured.
 
 ### 4. Running Automated Tests
 Run the entire unit and integration test suite:
@@ -233,8 +233,20 @@ All errors are normalized through `ExceptionHandlingMiddleware` into RFC 7807 co
 
 ---
 
+## Timebox
+- **Timebox**: 3-5 hours total.
+- **Used**
+  - 10m Creating phased plan to feed into agentic AI.
+  - 1h Walking AI through phased plan.
+  - 30m Running through full build following README.md
+  - 1h Identifying some defects and clarifications, resolving issues.
+  - 30m Cleaning and updating README.md.
+- **Total Time Spent**: 3h 10m~
+
+---
+
 ## AI Usage Disclosure Log
-- **Tools Used**: JetBrains Junie (powered by `claude-opus-4-8`).
+- **Tools Used**: JetBrains Junie (Agentic AI powered by `claude-opus-4-8`).
 - **Tasks Performed by AI**:
   - Scaffolding domain entities (`Manufacturer`, `Console`) and custom domain exception hierarchy.
   - Formulating domain invariant validation logic and relationships.
@@ -251,3 +263,20 @@ All errors are normalized through `ExceptionHandlingMiddleware` into RFC 7807 co
   - Application service domain invariant validations and FluentValidation pipelines verified.
   - HTTP status codes (200, 201, 204, 400, 404, 409) and ProblemDetails verified via integration test suite.
   - Vue 3 frontend components, stores, routers, and Leaflet map integration structured and validated.
+
+---
+
+## Assumptions / Trade-offs
+- **Assumptions**
+    - The user is on a linux based system.
+    - The user already has docker available to them, or they have available a pre-existing SQL database.
+    - The user already has dotnet core 10 available to them.
+    - The application will be hosted on a single server for simplicity.
+    - The application is not intended to be highly scalable or distributed.
+- **Trade-offs**
+    - Because the application was not designed originally with scalability in mind, it will not be suitable for big data environments in its current state.
+      - Horizontal scaling could be implemented with relative ease as the API layer is stateless, NGINX/HAProxy/Kubernetes Load Balancers could be used to distribute traffic across multiple instances of the application.
+      - If the application was to be scaled or distributed, it would require changes to allow for pagination of the UI, the console list view is currently not paginated and same with the manufacturer list view.
+      - Considerations could be made to allow the application to be scaled via caching. The database layer could rather easily be replaced with a distributed caching system such as Redis.
+    - The database is currently the source of truth for the application and a single point of failure. If the db is unresponsive then the application ceases to function.
+      - Considerations could be made for geo replication of the database to allow for failover, a small update to the application connection string would be required to allow for failover.

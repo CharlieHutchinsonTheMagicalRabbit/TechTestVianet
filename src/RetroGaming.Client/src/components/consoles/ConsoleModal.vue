@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import type { ConsoleDto, CreateConsoleRequest, UpdateConsoleRequest, ManufacturerDto } from '../../types';
+import { validateNumberInRange, validateYear, MIN_YEAR } from '../../utils/validation';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -69,18 +70,21 @@ function validate(): boolean {
     errors.value.name = 'Console name cannot exceed 100 characters.';
   }
 
-  if (!releaseYear.value || releaseYear.value < 1970 || releaseYear.value > currentYear + 1) {
-    errors.value.releaseYear = `Release year must be between 1970 and ${currentYear + 1}.`;
+  const releaseYearError = validateYear(releaseYear.value, 'Release year', MIN_YEAR, currentYear + 1);
+  if (releaseYearError) {
+    errors.value.releaseYear = releaseYearError;
   } else if (selectedManufacturer.value && releaseYear.value < selectedManufacturer.value.foundedYear) {
     errors.value.releaseYear = `Release year cannot predate ${selectedManufacturer.value.name}'s founding year (${selectedManufacturer.value.foundedYear}).`;
   }
 
-  if (!generation.value || generation.value < 1 || generation.value > 15) {
-    errors.value.generation = 'Generation must be between 1 and 15.';
+  const generationError = validateNumberInRange(generation.value, 'Generation', 1, 15);
+  if (generationError) {
+    errors.value.generation = generationError;
   }
 
-  if (unitsSoldInMillions.value === undefined || unitsSoldInMillions.value === null || unitsSoldInMillions.value < 0) {
-    errors.value.unitsSoldInMillions = 'Units sold cannot be negative.';
+  const unitsSoldError = validateNumberInRange(unitsSoldInMillions.value, 'Units sold', 0, Number.MAX_SAFE_INTEGER);
+  if (unitsSoldError) {
+    errors.value.unitsSoldInMillions = unitsSoldError;
   }
 
   return Object.keys(errors.value).length === 0;

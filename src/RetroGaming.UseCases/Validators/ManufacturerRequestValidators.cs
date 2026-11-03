@@ -7,29 +7,12 @@ public class CreateManufacturerRequestValidator : AbstractValidator<CreateManufa
 {
     public CreateManufacturerRequestValidator()
     {
-        RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Manufacturer name is required.")
-            .MaximumLength(100).WithMessage("Manufacturer name must not exceed 100 characters.");
-
-        RuleFor(x => x.HqCity)
-            .NotEmpty().WithMessage("HQ City is required.")
-            .MaximumLength(100).WithMessage("HQ City must not exceed 100 characters.");
-
-        RuleFor(x => x.HqCountry)
-            .NotEmpty().WithMessage("HQ Country is required.")
-            .MaximumLength(100).WithMessage("HQ Country must not exceed 100 characters.");
-
-        RuleFor(x => x.FoundedYear)
-            .InclusiveBetween(1800, DateTime.UtcNow.Year)
-            .WithMessage($"Founded year must be between 1800 and {DateTime.UtcNow.Year}.");
-
-        RuleFor(x => x.Latitude)
-            .InclusiveBetween(-90.0, 90.0)
-            .WithMessage("Latitude must be between -90 and 90 degrees.");
-
-        RuleFor(x => x.Longitude)
-            .InclusiveBetween(-180.0, 180.0)
-            .WithMessage("Longitude must be between -180 and 180 degrees.");
+        RuleFor(x => x.Name).ValidName("Manufacturer name");
+        RuleFor(x => x.HqCity).ValidName("HQ City");
+        RuleFor(x => x.HqCountry).ValidName("HQ Country");
+        RuleFor(x => x.FoundedYear).ValidFoundedYear();
+        RuleFor(x => x.Latitude).ValidLatitude();
+        RuleFor(x => x.Longitude).ValidLongitude();
     }
 }
 
@@ -37,28 +20,11 @@ public class UpdateManufacturerRequestValidator : AbstractValidator<UpdateManufa
 {
     public UpdateManufacturerRequestValidator()
     {
-        RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Manufacturer name is required.")
-            .MaximumLength(100).WithMessage("Manufacturer name must not exceed 100 characters.");
-
-        RuleFor(x => x.HqCity)
-            .NotEmpty().WithMessage("HQ City is required.")
-            .MaximumLength(100).WithMessage("HQ City must not exceed 100 characters.");
-
-        RuleFor(x => x.HqCountry)
-            .NotEmpty().WithMessage("HQ Country is required.")
-            .MaximumLength(100).WithMessage("HQ Country must not exceed 100 characters.");
-
-        RuleFor(x => x.FoundedYear)
-            .InclusiveBetween(1800, DateTime.UtcNow.Year)
-            .WithMessage($"Founded year must be between 1800 and {DateTime.UtcNow.Year}.");
-
-        RuleFor(x => x.Latitude)
-            .InclusiveBetween(-90.0, 90.0)
-            .WithMessage("Latitude must be between -90 and 90 degrees.");
-
-        RuleFor(x => x.Longitude)
-            .InclusiveBetween(-180.0, 180.0)
-            .WithMessage("Longitude must be between -180 and 180 degrees.");
+        RuleFor(x => x.Name).ValidName("Manufacturer name");
+        RuleFor(x => x.HqCity).ValidName("HQ City");
+        RuleFor(x => x.HqCountry).ValidName("HQ Country");
+        RuleFor(x => x.FoundedYear).ValidFoundedYear();
+        RuleFor(x => x.Latitude).ValidLatitude();
+        RuleFor(x => x.Longitude).ValidLongitude();
     }
 }
