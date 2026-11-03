@@ -134,7 +134,6 @@ public class ConsolesControllerTests
         var first = consoles!.First();
 
         var updateRequest = new UpdateConsoleRequest(
-            first.ManufacturerId,
             first.Name + " Special Edition",
             first.ReleaseYear,
             first.Generation,

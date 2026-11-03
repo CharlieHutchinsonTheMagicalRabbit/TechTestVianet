@@ -4,6 +4,7 @@ services:
     container_name: retrogaming-sqlserver
     environment:
       - ACCEPT_EULA=Y
+      - MYSQL_DATABASE=RetroGamingDb
       - MSSQL_SA_PASSWORD=YourStrong@Passw0rd!
       - MSSQL_PID=Developer
     ports:

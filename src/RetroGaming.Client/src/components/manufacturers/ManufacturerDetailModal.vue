@@ -66,10 +66,10 @@ const emit = defineEmits<{
           </div>
         </div>
 
-        <!-- Consoles Catalog -->
+        <!-- Consoles Catalogue -->
         <div>
           <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">
-            Hardware Catalog
+            Hardware Catalogue
           </h4>
 
           <div v-if="manufacturer.consoles.length === 0" class="text-center py-8 bg-slate-800/30 rounded-lg border border-slate-800 text-slate-400 text-sm">

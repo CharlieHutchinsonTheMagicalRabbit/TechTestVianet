@@ -32,9 +32,6 @@ public class UpdateConsoleRequestValidator : AbstractValidator<UpdateConsoleRequ
 {
     public UpdateConsoleRequestValidator()
     {
-        RuleFor(x => x.ManufacturerId)
-            .NotEmpty().WithMessage("Manufacturer ID is required.");
-
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Console name is required.")
             .MaximumLength(100).WithMessage("Console name must not exceed 100 characters.");

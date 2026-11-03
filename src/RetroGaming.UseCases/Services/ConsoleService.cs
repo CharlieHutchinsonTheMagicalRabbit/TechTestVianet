@@ -197,16 +197,16 @@ public class ConsoleService : IConsoleService
 
         var targetManufacturer = await _dbContext.Manufacturers
             .Include(m => m.Consoles)
-            .FirstOrDefaultAsync(m => m.Id == request.ManufacturerId, cancellationToken);
+            .FirstOrDefaultAsync(m => m.Id == console.ManufacturerId, cancellationToken);
 
         if (targetManufacturer == null)
         {
-            throw new EntityNotFoundException(nameof(Manufacturer), request.ManufacturerId);
+            throw new EntityNotFoundException(nameof(Manufacturer), console.ManufacturerId);
         }
 
         var normalizedName = request.Name.Trim();
         var duplicateName = await _dbContext.Consoles
-            .AnyAsync(c => c.Id != id && c.ManufacturerId == request.ManufacturerId && c.Name.ToLower() == normalizedName.ToLower(), cancellationToken);
+            .AnyAsync(c => c.Id != id && c.ManufacturerId == console.ManufacturerId && c.Name.ToLower() == normalizedName.ToLower(), cancellationToken);
 
         if (duplicateName)
         {
@@ -227,8 +227,6 @@ public class ConsoleService : IConsoleService
             request.UnitsSoldInMillions,
             request.IsDiscontinued
         );
-
-        console.AssignToManufacturer(targetManufacturer);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

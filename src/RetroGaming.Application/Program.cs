@@ -2,6 +2,7 @@ using Microsoft.OpenApi;
 using RetroGaming.Application.Middleware;
 using RetroGaming.UseCases;
 using RetroGaming.Infrastructure;
+using RetroGaming.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Apply database migrations on startup
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<AppDbContextInitialiser>();
+    await initialiser.InitialiseAsync();
+}
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionHandlingMiddleware>();

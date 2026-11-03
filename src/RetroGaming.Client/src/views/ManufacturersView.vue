@@ -119,7 +119,7 @@ async function handleConfirmDelete() {
       </div>
       <h3 class="text-lg font-bold text-slate-300">No manufacturers registered</h3>
       <p class="text-slate-500 text-sm mt-1 max-w-sm mx-auto">
-        Create your first manufacturer to begin cataloging gaming hardware.
+        Create your first manufacturer to begin cataloguing gaming hardware.
       </p>
     </div>
 
@@ -174,7 +174,7 @@ async function handleConfirmDelete() {
             class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition border border-slate-700 text-center"
             @click="openDetailModal(m)"
           >
-            View Catalog
+            View Catalogue
           </button>
 
           <div class="flex items-center space-x-1">
@@ -224,7 +224,7 @@ async function handleConfirmDelete() {
     <ConfirmModal
       :is-open="isDeleteModalOpen"
       title="Delete Manufacturer"
-      :message="`Are you sure you want to delete '${manufacturerToDelete?.name}'? This will be rejected if the manufacturer still has consoles in the catalog.`"
+      :message="`Are you sure you want to delete '${manufacturerToDelete?.name}'? This will be rejected if the manufacturer still has consoles in the catalogue.`"
       confirm-text="Delete"
       is-destructive
       :loading="manufacturerStore.loading"

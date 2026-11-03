@@ -21,7 +21,6 @@ public record CreateConsoleRequest(
 );
 
 public record UpdateConsoleRequest(
-    Guid ManufacturerId,
     string Name,
     int ReleaseYear,
     int Generation,
